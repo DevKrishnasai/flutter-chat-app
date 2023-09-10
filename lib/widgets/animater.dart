@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class CircularNumberProgressIndicator extends StatefulWidget {
   final int time;
 
-  CircularNumberProgressIndicator({super.key, required this.time});
+  CircularNumberProgressIndicator({Key? key, required this.time})
+      : super(key: key);
+
   @override
-  // ignore: library_private_types_in_public_api
   _CircularNumberProgressIndicatorState createState() =>
       _CircularNumberProgressIndicatorState();
 }
@@ -16,56 +16,61 @@ class _CircularNumberProgressIndicatorState
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  bool isAnimating = false;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: widget.time), // Adjust the animation duration
-    )..repeat(); // Continuous rotation
+      duration: Duration(seconds: widget.time),
+    );
 
     _animation = Tween<double>(begin: 0, end: 1).animate(_controller);
 
-    // Uncomment this line to reverse the animation for a different effect
-    // _controller.reverse();
+    // Start the animation when the widget is built
+    _controller.forward();
+    isAnimating = true;
+
+    // Add a listener to restart the animation when it completes
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _controller.repeat();
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        final progress = (_animation.value * 100).toInt();
-        return Scaffold(
-          backgroundColor: Colors.black,
-          body: Center(
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  height: 100,
-                  width: 100,
-                  child: CircularProgressIndicator(
-                    strokeAlign: BorderSide.strokeAlignCenter,
-                    strokeWidth: 8.0,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    backgroundColor: Colors.black,
-                    value: _animation.value,
-                  ),
-                ),
-                Text(
-                  '$progress',
-                  style: const TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-              ],
+    return GestureDetector(
+      onTap: () {
+        if (isAnimating) {
+          _controller.stop();
+        } else {
+          _controller.repeat();
+        }
+        setState(() {
+          isAnimating = !isAnimating;
+        });
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          RotationTransition(
+            turns: _animation,
+            child: Container(
+              height: 80,
+              width: 80,
+              child: CircularProgressIndicator(
+                strokeWidth: 8.0,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                backgroundColor: Colors.grey.withOpacity(0.5),
+                strokeCap: StrokeCap.round,
+              ),
             ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 

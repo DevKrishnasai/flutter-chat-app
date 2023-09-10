@@ -214,7 +214,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(
-                        height: 80,
+                        height: 40,
                       ),
                       GestureDetector(
                         onTap: () {
@@ -236,7 +236,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(
-                        height: 40,
+                        height: 30,
                       ),
                       GestureDetector(
                         onTap: () {
@@ -330,44 +330,5 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           );
-  }
-}
-
-class Loading extends StatelessWidget {
-  const Loading({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    const TWO_PI = 3.14 * 2;
-    final size = 200.0;
-    return Center(
-      child: Container(
-        width: size,
-        height: size,
-        child: Stack(
-          children: [
-            ShaderMask(
-              shaderCallback: (rect) {
-                return SweepGradient(
-                        startAngle: 0.0,
-                        endAngle: TWO_PI,
-                        stops: [0.0, 0.5, 0.5, 1.0],
-                        center: Alignment.center,
-                        colors: [Colors.blue, Colors.transparent])
-                    .createShader(rect);
-              },
-              child: Container(
-                width: size,
-                height: size,
-                decoration:
-                    BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
