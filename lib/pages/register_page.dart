@@ -112,13 +112,15 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
-        ? CircularNumberProgressIndicator(
-            time: 2,
-          )
-        : Scaffold(
-            backgroundColor: Colors.black,
-            body: SafeArea(
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: isLoading
+          ? Center(
+              child: CircularNumberProgressIndicator(
+                time: 2,
+              ),
+            )
+          : SafeArea(
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Container(
@@ -476,7 +478,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
             ),
-          );
+    );
   }
 }
 

@@ -1,5 +1,6 @@
 import 'package:chat_app_firebase/firestore_files/data_base.dart';
 import 'package:chat_app_firebase/pages/chat_screen.dart';
+import 'package:chat_app_firebase/widgets/animater.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -14,32 +15,38 @@ class _SearchPageState extends State<SearchPage> {
   FireBaseClient client = FireBaseClient();
   TextEditingController searchController = TextEditingController();
   List<Map<String, dynamic>> resultList = [];
+  bool isLoading = false;
 
   void searchQuery(String search) async {
     if (search.isEmpty) {
       setState(() {
+        isLoading = false;
         resultList.clear();
       });
       return;
-    }
-
-    QuerySnapshot querySnapshot =
-        await client.firestore.collection("user").get();
-
-    setState(() {
-      resultList.clear();
-      querySnapshot.docs.forEach((doc) {
-        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        if (data["uid"] != client.auth.currentUser!.uid) {
-          String name = (data['name'] as String).toLowerCase();
-          search = search.toLowerCase();
-
-          if (name.contains(search)) {
-            resultList.add(data);
-          }
-        }
+    } else {
+      setState(() {
+        isLoading = true;
       });
-    });
+      QuerySnapshot querySnapshot =
+          await client.firestore.collection("user").get();
+
+      setState(() {
+        resultList.clear();
+        isLoading = false;
+        querySnapshot.docs.forEach((doc) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          if (data["uid"] != client.auth.currentUser!.uid) {
+            String name = (data['name'] as String).toLowerCase();
+            search = search.toLowerCase();
+
+            if (name.contains(search)) {
+              resultList.add(data);
+            }
+          }
+        });
+      });
+    }
   }
 
   @override
@@ -104,65 +111,77 @@ class _SearchPageState extends State<SearchPage> {
         backgroundColor: Colors.black,
         elevation: 7,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: resultList.isEmpty
-                ? const Center(
-                    child: Text('No results found.'),
-                  )
-                : ListView.builder(
-                    itemCount: resultList.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        onTap: () {
-                          DocumentReference docRef = client.firestore
-                              .collection("user_user")
-                              .doc(client.auth.currentUser!.uid);
+      body: isLoading
+          ? Center(
+              child: CircularNumberProgressIndicator(
+                time: 1,
+              ),
+            )
+          : Column(
+              children: [
+                Expanded(
+                  child: resultList.isEmpty
+                      ? const Center(
+                          child: Text(
+                            'No results found.',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: resultList.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              onTap: () {
+                                DocumentReference docRef = client.firestore
+                                    .collection("user_user")
+                                    .doc(client.auth.currentUser!.uid);
 
-                          docRef
-                              .get()
-                              .then((DocumentSnapshot documentSnapshot) {
-                            if (documentSnapshot.exists) {
-                              docRef.update({
-                                "friends": FieldValue.arrayUnion(
-                                    [resultList[index]["uid"]]),
-                              });
-                            } else {
-                              docRef.set({
-                                "friends": [resultList[index]["uid"]],
-                              });
-                            }
-                            Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) {
-                                return ChatScreen(
-                                  senderUid: client.auth.currentUser!.uid,
-                                  receiverUid: resultList[index]["uid"],
-                                );
-                              }),
+                                docRef
+                                    .get()
+                                    .then((DocumentSnapshot documentSnapshot) {
+                                  if (documentSnapshot.exists) {
+                                    docRef.update({
+                                      "friends": FieldValue.arrayUnion(
+                                          [resultList[index]["uid"]]),
+                                    });
+                                  } else {
+                                    docRef.set({
+                                      "friends": [resultList[index]["uid"]],
+                                    });
+                                  }
+                                  Navigator.pop(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) {
+                                      return ChatScreen(
+                                        senderUid: client.auth.currentUser!.uid,
+                                        receiverUid: resultList[index]["uid"],
+                                      );
+                                    }),
+                                  );
+                                }).catchError((error) {
+                                  print("Error getting document: $error");
+                                });
+                              },
+                              title: Text(resultList[index]["name"]),
+                              subtitle: Text(resultList[index]["uid"]),
+                              leading: ClipRRect(
+                                  borderRadius: BorderRadius.circular(30),
+                                  child: Image.network(
+                                    resultList[index]["url"],
+                                    width: 60,
+                                    height: 60,
+                                    fit: BoxFit.cover,
+                                  )),
                             );
-                          }).catchError((error) {
-                            print("Error getting document: $error");
-                          });
-                        },
-                        title: Text(resultList[index]["name"]),
-                        subtitle: Text(resultList[index]["uid"]),
-                        leading: ClipRRect(
-                            borderRadius: BorderRadius.circular(30),
-                            child: Image.network(
-                              resultList[index]["url"],
-                              width: 60,
-                              height: 60,
-                              fit: BoxFit.cover,
-                            )),
-                      );
-                    },
-                  ),
-          ),
-        ],
-      ),
+                          },
+                        ),
+                ),
+              ],
+            ),
     );
   }
 }

@@ -75,13 +75,15 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
 
-    return isLoading
-        ? CircularNumberProgressIndicator(
-            time: 2,
-          )
-        : Scaffold(
-            backgroundColor: Colors.black,
-            body: SingleChildScrollView(
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: isLoading
+          ? Center(
+              child: CircularNumberProgressIndicator(
+                time: 2,
+              ),
+            )
+          : SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: SafeArea(
                 child: Container(
@@ -329,6 +331,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-          );
+    );
   }
 }

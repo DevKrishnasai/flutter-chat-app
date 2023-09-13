@@ -24,21 +24,15 @@ class _ChatScreenState extends State<ChatScreen> {
   TextEditingController textController = TextEditingController();
   String msgUid = FirebaseAuth.instance.currentUser!.uid;
   Map<String, dynamic>? userData;
-  late ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
     loadChatMessages();
-    _scrollController = ScrollController();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollToLast();
-    });
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
     super.dispose();
   }
 
@@ -66,16 +60,6 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  void _scrollToLast() {
-    if (_scrollController.hasClients) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
-    }
-  }
-
   void addMessage(String message) async {
     final newMessage = {
       "uid": widget.senderUid,
@@ -86,8 +70,6 @@ class _ChatScreenState extends State<ChatScreen> {
     await client.firestore.collection("messages").doc(msgUid).update({
       "messageData": FieldValue.arrayUnion([newMessage]),
     });
-
-    _scrollToLast();
   }
 
   @override
@@ -239,7 +221,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
                                             if (messageData != null) {
                                               return ListView.builder(
-                                                controller: _scrollController,
                                                 itemCount: messageData.length,
                                                 itemBuilder: (context, index) {
                                                   final message =
