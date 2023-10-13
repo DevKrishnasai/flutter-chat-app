@@ -115,6 +115,7 @@ class _SearchPageState extends State<SearchPage> {
           ? Center(
               child: CircularNumberProgressIndicator(
                 time: 1,
+                color: Colors.black,
               ),
             )
           : Column(
@@ -135,39 +136,60 @@ class _SearchPageState extends State<SearchPage> {
                           itemBuilder: (context, index) {
                             return ListTile(
                               onTap: () {
-                                DocumentReference docRef = client.firestore
+                                DocumentReference docRef1 = client.firestore
                                     .collection("user_user")
                                     .doc(client.auth.currentUser!.uid);
+                                DocumentReference docRef2 = client.firestore
+                                    .collection("user_user")
+                                    .doc(resultList[index]["uid"]);
 
-                                docRef
+                                docRef1
                                     .get()
                                     .then((DocumentSnapshot documentSnapshot) {
                                   if (documentSnapshot.exists) {
-                                    docRef.update({
+                                    docRef1.update({
                                       "friends": FieldValue.arrayUnion(
                                           [resultList[index]["uid"]]),
                                     });
                                   } else {
-                                    docRef.set({
+                                    docRef1.set({
                                       "friends": [resultList[index]["uid"]],
                                     });
                                   }
-                                  Navigator.pop(context);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) {
-                                      return ChatScreen(
-                                        senderUid: client.auth.currentUser!.uid,
-                                        receiverUid: resultList[index]["uid"],
-                                      );
-                                    }),
-                                  );
-                                }).catchError((error) {
-                                  print("Error getting document: $error");
+
+                                  docRef2.get().then(
+                                      (DocumentSnapshot documentSnapshot) {
+                                    if (documentSnapshot.exists) {
+                                      docRef2.update({
+                                        "friends": FieldValue.arrayUnion(
+                                            [client.auth.currentUser!.uid]),
+                                      });
+                                    } else {
+                                      docRef2.set({
+                                        "friends": [
+                                          client.auth.currentUser!.uid
+                                        ],
+                                      });
+                                    }
+
+                                    Navigator.pop(context);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) {
+                                        return ChatScreen(
+                                          senderUid:
+                                              client.auth.currentUser!.uid,
+                                          receiverUid: resultList[index]["uid"],
+                                        );
+                                      }),
+                                    );
+                                  }).catchError((error) {
+                                    print("Error getting document: $error");
+                                  });
                                 });
                               },
                               title: Text(resultList[index]["name"]),
-                              subtitle: Text(resultList[index]["uid"]),
+                              // subtitle: Text(resultList[index]["uid"]),
                               leading: ClipRRect(
                                   borderRadius: BorderRadius.circular(30),
                                   child: Image.network(

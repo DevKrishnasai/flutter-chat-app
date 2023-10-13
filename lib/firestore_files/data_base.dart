@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FireBaseClient {
@@ -29,33 +29,6 @@ class FireBaseClient {
       );
       return false;
     }
-  }
-
-  //signin with google account
-  Future<dynamic> signInWithGoogle(BuildContext context) async {
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-
-    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser!.authentication;
-
-    final AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    await auth.signInWithCredential(credential);
-    String pathName = "/profile photos/default/person.png";
-    Reference task = FirebaseStorage.instance.ref().child(pathName);
-    String url = await task.getDownloadURL();
-    firestore.collection("user").doc(auth.currentUser!.uid).set({
-      "uid": auth.currentUser!.uid,
-      "email": auth.currentUser!.email,
-      "name": auth.currentUser!.displayName.toString(),
-      "url":
-          auth.currentUser?.photoURL == null ? url : auth.currentUser!.photoURL,
-    }, SetOptions(merge: true));
   }
 
   //create a account with email and password (signUp)

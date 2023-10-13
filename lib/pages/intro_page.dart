@@ -23,7 +23,7 @@ class _IntroPageState extends State<IntroPage> {
               SizedBox(
                 height: height * 1.4,
                 child: const Image(
-                  image: AssetImage('assets/images/logo.png'),
+                  image: AssetImage('assets/images/logo1.png'),
                 ),
               ),
               Expanded(

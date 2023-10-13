@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "607130346635-sgf376biob7k912a993scpk569vup02s.apps.googleusercontent.com",
+          "client_id": "607130346635-knkq0a3kc10vi4qg7utbo9thgql7vb38.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chat_app_firebase",
+            "certificate_hash": "5ee15419d4d8118e0eb8e65655b6124e68e1da21"
+          }
+        },
+        {
+          "client_id": "607130346635-iejdvd8b493pjvcm9m2ipfg58rueu4gs.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +35,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "607130346635-sgf376biob7k912a993scpk569vup02s.apps.googleusercontent.com",
+              "client_id": "607130346635-iejdvd8b493pjvcm9m2ipfg58rueu4gs.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "607130346635-f4261aumpmb5ihe3rer5ed0iv49eln08.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.chatAppFirebase"
+              }
             }
           ]
         }

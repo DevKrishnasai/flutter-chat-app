@@ -1,9 +1,13 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 
 class CircularNumberProgressIndicator extends StatefulWidget {
   final int time;
+  Color color;
 
-  CircularNumberProgressIndicator({Key? key, required this.time})
+  CircularNumberProgressIndicator(
+      {Key? key, required this.time, required this.color})
       : super(key: key);
 
   @override
@@ -63,7 +67,7 @@ class _CircularNumberProgressIndicatorState
               width: 80,
               child: CircularProgressIndicator(
                 strokeWidth: 8.0,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                valueColor: AlwaysStoppedAnimation<Color>(widget.color),
                 backgroundColor: Colors.grey.withOpacity(0.5),
                 strokeCap: StrokeCap.round,
               ),

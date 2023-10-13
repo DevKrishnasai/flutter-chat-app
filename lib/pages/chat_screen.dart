@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/services.dart';
 
 class ChatScreen extends StatefulWidget {
   final senderUid;
@@ -24,6 +25,7 @@ class _ChatScreenState extends State<ChatScreen> {
   TextEditingController textController = TextEditingController();
   String msgUid = FirebaseAuth.instance.currentUser!.uid;
   Map<String, dynamic>? userData;
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -33,6 +35,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -70,6 +73,17 @@ class _ChatScreenState extends State<ChatScreen> {
     await client.firestore.collection("messages").doc(msgUid).update({
       "messageData": FieldValue.arrayUnion([newMessage]),
     });
+
+    // Scroll to the bottom after adding a message
+    scrollToBottom();
+  }
+
+  void scrollToBottom() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
   }
 
   @override
@@ -82,6 +96,7 @@ class _ChatScreenState extends State<ChatScreen> {
           if (userSnapshot.connectionState == ConnectionState.waiting) {
             return Center(
                 child: CircularNumberProgressIndicator(
+              color: Colors.black,
               time: 2,
             ));
           }
@@ -97,18 +112,11 @@ class _ChatScreenState extends State<ChatScreen> {
               Expanded(
                 child: Stack(
                   children: [
-                    Positioned.fill(
-                      child: Image.asset(
-                        "assets/images/chatBG.jpg",
-                        fit: BoxFit.cover,
-                      ),
-                    ),
                     Column(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Your chat header UI with userData
                         Expanded(
                           child: Stack(
                             children: [
@@ -137,7 +145,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                             child: userData["url"] == null
                                                 ? CircularNumberProgressIndicator(
                                                     time: 1,
-                                                  )
+                                                    color: Colors.black)
                                                 : Container(
                                                     padding:
                                                         const EdgeInsets.all(
@@ -147,7 +155,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                                     decoration: ShapeDecoration(
                                                       image: DecorationImage(
                                                         image: NetworkImage(
-                                                            userData["url"]),
+                                                          userData["url"],
+                                                        ),
                                                         fit: BoxFit.fill,
                                                       ),
                                                       shape:
@@ -202,8 +211,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                           return Center(
                                               child:
                                                   CircularNumberProgressIndicator(
-                                            time: 2,
-                                          ));
+                                                      time: 1,
+                                                      color: Colors.black));
                                         }
 
                                         final DocumentSnapshot document =
@@ -221,6 +230,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
                                             if (messageData != null) {
                                               return ListView.builder(
+                                                controller: _scrollController,
+                                                reverse: false,
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 5),
                                                 itemCount: messageData.length,
                                                 itemBuilder: (context, index) {
                                                   final message =
@@ -237,6 +250,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                               );
                                             }
                                           }
+                                          scrollToBottom();
                                         }
 
                                         return Center(
@@ -262,14 +276,14 @@ class _ChatScreenState extends State<ChatScreen> {
                                                   color: Colors.white,
                                                 ),
                                               ),
-                                              enabledBorder: OutlineInputBorder(
+                                              focusedBorder: OutlineInputBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(10),
                                                 borderSide: const BorderSide(
                                                   color: Colors.white,
                                                 ),
                                               ),
-                                              focusedBorder: OutlineInputBorder(
+                                              enabledBorder: OutlineInputBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(10),
                                                 borderSide: const BorderSide(
@@ -278,8 +292,15 @@ class _ChatScreenState extends State<ChatScreen> {
                                               ),
                                               hintText: "Type a message",
                                               hintStyle: TextStyle(
-                                                  color: Colors.white),
+                                                color: Colors.white,
+                                              ),
                                             ),
+                                            onSubmitted: (text) {
+                                              if (text.isNotEmpty) {
+                                                addMessage(text);
+                                                textController.clear();
+                                              }
+                                            },
                                           ),
                                         ),
                                         IconButton(
