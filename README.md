@@ -1,4 +1,4 @@
-![Screenshot_1697173912](https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/4b525766-8708-449d-b8be-19a3aab6f71a)![person](https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/9f341c0a-f1ab-4e65-99a4-d1f112dcfa48)# Flutter Chat Application
+# Flutter Chat Application
 
 ![Flutter](https://img.shields.io/badge/Flutter-2.5.0-blue?logo=flutter) ![Dart](https://img.shields.io/badge/Dart-2.14.0-blue?logo=dart) ![Firebase](https://img.shields.io/badge/Firebase-9.0.0-blue?logo=firebase)
 
@@ -52,16 +52,20 @@ Before running the application, you need to configure Firebase with your project
 Ensure that you enable Firebase Authentication for email and password, as well as Firebase Realtime Database.
 
 ## Screenshots
-![Screenshot_1697173912](https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/4c0fb943-a753-4d7e-b805-3f9f38f3fc40)
-![Screenshot_1697173925](https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/442f5451-b97e-4000-974a-03af34209024)
-![Screenshot_1697173932](https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/22cd5253-1e6d-4099-bddc-d18e736780d9)
-![Screenshot_1697173948](https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/49b932bc-6ceb-4a4b-b666-6aae0fdbdf71)
-![Screenshot_1697173981](https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/f652a942-281a-4218-b84b-50ff813d0345)
-![Screenshot_1697173994](https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/fdd7353b-16ae-4f09-b286-52456e376d49)
-![Screenshot_1697174049](https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/9262e16c-4228-4c39-b91e-431840692f3c)
-![Screenshot_1697174037](https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/825eafab-c771-4d0d-9fe5-1cb6264b4176)
-![Screenshot_1697174014](https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/b56aa10c-58ab-482f-b533-7338962b6f42)
-![Screenshot_1697174054](https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/55b1fb0e-3051-46f4-aa8f-dddb90e51659)
+
+<p align="center">
+  <img width="200" src="https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/4c0fb943-a753-4d7e-b805-3f9f38f3fc40" alt="Screenshot 1">
+  <img width="200" src="https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/442f5451-b97e-4000-974a-03af34209024" alt="Screenshot 2">
+  <img width="200" src="https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/22cd5253-1e6d-4099-bddc-d18e736780d9" alt="Screenshot 3">
+  <img width="200" src="https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/49b932bc-6ceb-4a4b-b666-6aae0fdbdf71" alt="Screenshot 4">
+  <img width="200" src="https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/f652a942-281a-4218-b84b-50ff813d0345" alt="Screenshot 5">
+  <img width="200" src="https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/fdd7353b-16ae-4f09-b286-52456e376d49" alt="Screenshot 6">
+  <img width="200" src="https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/9262e16c-4228-4c39-b91e-431840692f3c" alt="Screenshot 7">
+  <img width="200" src="https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/825eafab-c771-4d0d-9fe5-1cb6264b4176" alt="Screenshot 8">
+  <img width="200" src="https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/b56aa10c-58ab-482f-b533-7338962b6f42" alt="Screenshot 9">
+  <img width="200" src="https://github.com/DevKrishnasai/flutter-chat-app/assets/122152880/55b1fb0e-3051-46f4-aa8f-dddb90e51659" alt="Screenshot 10">
+</p>
+
 
 
 
