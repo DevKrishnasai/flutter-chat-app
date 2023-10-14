@@ -1,4 +1,4 @@
-# Flutter Chat Application
+# Flutter Chat Application - SnapTalk
 
 ![Flutter](https://img.shields.io/badge/Flutter-2.5.0-blue?logo=flutter) ![Dart](https://img.shields.io/badge/Dart-2.14.0-blue?logo=dart) ![Firebase](https://img.shields.io/badge/Firebase-9.0.0-blue?logo=firebase)
 
@@ -70,5 +70,5 @@ Ensure that you enable Firebase Authentication for email and password, as well a
 
 
 ## Contributing
-Contributions are welcome! Feel free to open issues or submit pull requests to help improve this application.
+Contributions are welcome! Feel free to open issues or submit pull requests to help improve this application. 
 
